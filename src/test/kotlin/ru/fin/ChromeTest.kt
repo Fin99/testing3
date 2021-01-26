@@ -4,9 +4,13 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.openqa.selenium.Dimension
-import org.openqa.selenium.WebDriver
+import org.openqa.selenium.*
+import org.openqa.selenium.NoSuchElementException
 import org.openqa.selenium.chrome.ChromeDriver
+import org.openqa.selenium.support.ui.FluentWait
+import org.openqa.selenium.support.ui.Wait
+import java.time.Duration
+import java.util.*
 
 class ChromeTest {
     private lateinit var driver: WebDriver
@@ -24,6 +28,8 @@ class ChromeTest {
         driver = ChromeDriver()
         driver.manage().window().size = Dimension(1200, 1200)
         driver["https://www.fiverr.com/"]
+
+        catchCaptcha(driver)
     }
 
     @AfterEach

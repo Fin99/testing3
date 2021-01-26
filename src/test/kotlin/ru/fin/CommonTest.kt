@@ -1,7 +1,10 @@
 package ru.fin
 
-import org.openqa.selenium.By
-import org.openqa.selenium.WebDriver
+import org.openqa.selenium.*
+import org.openqa.selenium.support.ui.ExpectedConditions
+import org.openqa.selenium.support.ui.FluentWait
+import java.time.Duration
+
 
 fun searchService(driver: WebDriver) {
     search(driver, true)
@@ -39,5 +42,35 @@ fun login(driver: WebDriver) {
     driver.findElement(By.xpath("//*/div[@class=\"sign-in-form\"]/button[contains(@class, \"submit-button\")]"))
         .click()
 
-    Thread.sleep(5000)
+    catchCaptcha(driver)
+}
+
+fun catchCaptcha(driver: WebDriver) {
+    val captcha = findCaptcha(driver)
+    captcha?.let {
+        println("captcha found")
+        waitCaptcha(driver, captcha)
+    } ?: println("captcha not found")
+}
+
+private fun findCaptcha(driver: WebDriver): WebElement? = try {
+    FluentWait(driver)
+        .withTimeout(Duration.ofSeconds(5))
+        .pollingEvery(Duration.ofSeconds(1))
+        .ignoring(NoSuchElementException::class.java)
+        .until {
+            it.findElement(By.xpath("//h1[text()=\"One Small Step\"]"))
+        }
+} catch (captchaNotFound: TimeoutException) {
+    null
+}
+
+
+private fun waitCaptcha(driver: WebDriver, captcha: WebElement?) {
+    println("wait captcha")
+    FluentWait(driver)
+        .withTimeout(Duration.ofSeconds(600))
+        .pollingEvery(Duration.ofSeconds(1))
+        .until(ExpectedConditions.stalenessOf(captcha))
+    println("captcha completed")
 }
