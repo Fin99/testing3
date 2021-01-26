@@ -3,26 +3,20 @@ package ru.fin
 import org.junit.jupiter.api.Assertions
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
+import org.openqa.selenium.support.ui.ExpectedConditions
 import org.openqa.selenium.support.ui.WebDriverWait
+import ru.fin.pages.HomePage
+import ru.fin.pages.MainPage
 
 fun loginTest(driver: WebDriver) {
-    login(driver)
+    HomePage(driver).openLoginElement().login()
+    val avatarElement = MainPage(driver).openAvatarMenu()
 
-    WebDriverWait(driver, 10).until {
-        driver.findElement(By.xpath("//*/li[@class=\"display-from-sm\"]//*/button[@class=\"nav-popover-items-toggler\"]"))
-    }.click()
-
-    Assertions.assertNotNull(
-        WebDriverWait(driver, 10)
-            .until { driver.findElement(By.xpath("//*/a[@data-event-type=\"logout\"]")) }.text
-    )
+    Assertions.assertNotNull(avatarElement.logout.text)
 }
 
 fun loginSocialNetworkTest(driver: WebDriver) {
-    driver.findElement(By.xpath("//*/li[@class=\"header-login\"]/a")).click()
-    driver.findElement(By.xpath("//*/button[@class=\"facebook-signing-button\"]")).click()
+    HomePage(driver).openLoginElement().facebookLogin()
 
-    Thread.sleep(5000)
-
-    Assertions.assertEquals(2, driver.windowHandles.size)
+    WebDriverWait(driver, 10).until(ExpectedConditions.numberOfWindowsToBe(2))
 }
