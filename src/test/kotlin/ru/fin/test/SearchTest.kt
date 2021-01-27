@@ -1,9 +1,8 @@
 package ru.fin
 
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
-import ru.fin.pages.HomePage
+import ru.fin.page.HomePage
 
 fun searchTest(driver: WebDriver) {
     val searchPage = HomePage(driver).search()
@@ -23,5 +22,5 @@ fun serviceTest(driver: WebDriver) {
     val search = HomePage(driver).search()
     val username = search.username.text
 
-    assertEquals(username, search.openService().username.text)
+    assertEquals(username, search.openAnonymousService().username.text)
 }

@@ -2,9 +2,8 @@ package ru.fin
 
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
-import ru.fin.pages.HomePage
+import ru.fin.page.HomePage
 
 fun createProjectTest(driver: WebDriver) {
     var projects = HomePage(driver).openLoginForm().login()

@@ -1,4 +1,4 @@
-package ru.fin.pages
+package ru.fin.page
 
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
@@ -31,5 +31,13 @@ class SearchPage(val driver: WebDriver) {
         waiter.until(ExpectedConditions.numberOfWindowsToBe(2))
         driver.switchTo().window(driver.windowHandles.find { (it == oldWindow).not() })
         return ServicePage(driver)
+    }
+
+    fun openAnonymousService(): AnonymousServicePage {
+        val oldWindow = driver.windowHandle
+        description.click()
+        waiter.until(ExpectedConditions.numberOfWindowsToBe(2))
+        driver.switchTo().window(driver.windowHandles.find { (it == oldWindow).not() })
+        return AnonymousServicePage(driver)
     }
 }

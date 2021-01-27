@@ -2,7 +2,7 @@ package ru.fin
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.openqa.selenium.WebDriver
-import ru.fin.pages.HomePage
+import ru.fin.page.HomePage
 
 
 fun changeLanguageTest(driver: WebDriver) {

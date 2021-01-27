@@ -1,4 +1,4 @@
-package ru.fin.pages
+package ru.fin.page
 
 import org.openqa.selenium.By
 import org.openqa.selenium.Keys

@@ -3,8 +3,7 @@ package ru.fin
 import org.junit.jupiter.api.Assertions
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.support.ui.ExpectedConditions
-import org.openqa.selenium.support.ui.WebDriverWait
-import ru.fin.pages.HomePage
+import ru.fin.page.HomePage
 
 fun loginTest(driver: WebDriver) {
     val avatarElement = HomePage(driver).openLoginForm().login().openAvatarMenu()

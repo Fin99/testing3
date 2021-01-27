@@ -3,7 +3,7 @@ package ru.fin
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotEquals
 import org.openqa.selenium.WebDriver
-import ru.fin.pages.HomePage
+import ru.fin.page.HomePage
 
 fun paymentTest(driver: WebDriver) {
     val paymentOptionsPage = HomePage(driver).openLoginForm().login()
@@ -40,5 +40,6 @@ fun reportTest(driver: WebDriver) {
         .search().openService().createReport()
         .selectReportReason().next()
         .selectReportContent().setReferenceUrl().submit()
+
     assertEquals("Thank You For Reporting", resultForm.thanks.text)
 }

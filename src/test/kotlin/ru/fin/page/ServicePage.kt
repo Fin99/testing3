@@ -1,4 +1,4 @@
-package ru.fin.pages
+package ru.fin.page
 
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
@@ -6,18 +6,24 @@ import org.openqa.selenium.WebElement
 import ru.fin.catchCaptcha
 import ru.fin.waiter
 
-class ServicePage(val driver: WebDriver) {
+open class AnonymousServicePage(val driver: WebDriver) {
     val username: WebElement
-    private val payment: WebElement
-    private val like: WebElement
-    private val list: WebElement
-    private val report: WebElement
 
     init {
         catchCaptcha(driver)
         username = waiter.until {
             driver.findElement(By.xpath("//div[@class=\"profile-name\"]//a"))
         }
+    }
+}
+
+class ServicePage(driver: WebDriver): AnonymousServicePage(driver) {
+    private val payment: WebElement
+    private val like: WebElement
+    private val list: WebElement
+    private val report: WebElement
+
+    init {
         payment = waiter.until {
             driver.findElement(By.xpath("(//form//button[text()=\"Continue\"])[1]"))
         }
@@ -117,8 +123,12 @@ class ReportSecondForm(val driver: WebDriver) {
 
 class ReportResultForm(val driver: WebDriver) {
     val thanks: WebElement
+    val reportId: WebElement
 
     init {
+        reportId = waiter.until {
+            driver.findElement(By.xpath("//b[contains(text(), \"Your report ID is\")]"))
+        }
         thanks = waiter.until {
             driver.findElement(By.xpath("//header[contains(@class, \"modal\")]/h2"))
         }

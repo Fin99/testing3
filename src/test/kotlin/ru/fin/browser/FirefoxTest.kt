@@ -1,4 +1,4 @@
-package ru.fin
+package ru.fin.browser
 
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeAll
@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test
 import org.openqa.selenium.Dimension
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.firefox.FirefoxDriver
+import ru.fin.*
 
 class FirefoxTest {
     private lateinit var driver: WebDriver
@@ -24,6 +25,8 @@ class FirefoxTest {
         driver = FirefoxDriver()
         driver.manage().window().size = Dimension(1200, 1200)
         driver["https://www.fiverr.com/"]
+
+        initWaiter(driver)
     }
 
     @AfterEach

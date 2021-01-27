@@ -1,9 +1,8 @@
-package ru.fin.pages
+package ru.fin.page
 
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebElement
-import ru.fin.catchCaptcha
 import ru.fin.waiter
 
 class CategoryPage(driver: WebDriver): PageWithMenu(driver) {
