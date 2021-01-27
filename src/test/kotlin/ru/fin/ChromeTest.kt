@@ -25,8 +25,10 @@ class ChromeTest {
         driver.manage().window().size = Dimension(1200, 1200)
         driver["https://www.fiverr.com/"]
 
-        catchCaptcha(driver)
+        initWait(driver)
     }
+
+
 
     @AfterEach
     fun closeDriver() {

@@ -4,72 +4,36 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
+import ru.fin.pages.HomePage
 
 fun createProjectTest(driver: WebDriver) {
-    login(driver)
+    var projects = HomePage(driver).openLoginForm().login()
+        .openProjectsPage()
 
-    //create project
-    driver.findElement(By.xpath("//nav[contains(@class, \"fiverr-nav\")]//li[2]")).click()
-    Thread.sleep(5000)
+    val startProjectCount = projects.projectsCount()
+    projects = projects.createNewProject()
+        .setProjectName().setProjectDescription().createProject().submitCreate()
 
-    driver.findElement(By.xpath("//section[@class=\"MODAL__modal-content-body-ucaa90899 modal-content-body rounded-corners\"]//button[@class=\"fit-icon close-btn fit-icon-clickable\"]"))
-        .click()
-    Thread.sleep(5000)
+    val projectCountWithNewProject = projects.projectsCount()
 
-    driver.findElement(By.xpath("//div[@class=\"add-new-project\"]/button")).click()
-    Thread.sleep(5000)
-    driver.findElement(By.xpath("//div[@class=\"project-details-body\"]//input")).sendKeys("new project")
-    driver.findElement(By.xpath("//div[@class=\"project-details-body\"]//textarea")).sendKeys("new description")
-    driver.findElement(By.xpath("//div[@class=\"project-details-body\"]//button[2]")).click()
-    Thread.sleep(5000)
-    driver.findElement(By.xpath("//div[@class=\"project-successfully-created-modal\"]//button[1]")).click()
-    Thread.sleep(5000)
+    assertEquals(startProjectCount + 1, projectCountWithNewProject)
 
-    //delete project
-    val oldSize = driver.findElements(By.xpath("//div[@class=\"projects-table\"]//div[@class=\"table-row\"]")).size
+    val endProjectCount = projects.openNewProjectMenu().deleteProject().submitDelete().projectsCount()
 
-    driver.findElement(By.xpath("//div[@class=\"projects-table\"]//div[@class=\"table-row\" and .//strong/a[text()=\"new project\"]]//div[@class=\"on-body-popover\"]"))
-        .click()
-    Thread.sleep(5000)
-    driver.findElement(By.xpath("//div[@id=\"popover-on-body\"]//div[7]/button"))
-        .click()
-    Thread.sleep(5000)
-    driver.findElement(By.xpath("//div[@class=\"btns-container\"]/button[2]")).click()
-    Thread.sleep(5000)
-
-    assertEquals(
-        oldSize - 1,
-        driver.findElements(By.xpath("//div[@class=\"projects-table\"]//div[@class=\"table-row\"]")).size
-    )
+    assertEquals(endProjectCount + 1, projectCountWithNewProject)
 }
 
 fun editCommandTest(driver: WebDriver) {
-    login(driver)
+    val teamWithPendingMember = HomePage(driver).openLoginForm().login()
+        .openTeamPage().openInviteMemberForm()
+        .setMemberEmail().selectProject().inviteMember()
 
-    driver.findElement(By.xpath("//nav[contains(@class, \"fiverr-nav\")]//li[4]")).click()
-    driver.findElement(By.xpath("//div[@class=\"invite-members-button\"]/button")).click()
-    Thread.sleep(5000)
-
-    driver.findElement(By.xpath("(//div[contains(@class, \"modal-body\")]//input)[1]")).sendKeys("imashkaman@gmail.com")
-    Thread.sleep(5000)
-    driver.findElement(By.xpath("//div[@class='user-combobox']//span[@class='orca-user-combobox-option-new-value']"))
-        .click()
-    driver.findElement(By.xpath("//div[@class=\"selectable-list\"]//span")).click()
-    driver.findElement(By.xpath("//footer[@class=\"modal-footer\"]//button[2]")).click()
-
-
-    Assertions.assertNotNull(
-        driver.findElement(By.xpath("//section//div[@class=\"table-row pending\"]"))
-    )
+    Assertions.assertNotNull(teamWithPendingMember.pendingMember)
 }
 
 fun checkOrdersTest(driver: WebDriver) {
-    login(driver)
+    val ordersPage = HomePage(driver).openLoginForm().login()
+        .openOrdersPage()
 
-    driver.findElement(By.xpath("//nav[contains(@class, \"fiverr-nav\")]//li[3]")).click()
-
-    assertEquals(
-        "No orders to track yet",
-        driver.findElement(By.xpath("//main[@class=\"main-content\"]//h3")).text
-    )
+    assertEquals("No orders to track yet", ordersPage.noOrders.text)
 }
