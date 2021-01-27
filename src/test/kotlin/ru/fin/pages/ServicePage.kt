@@ -19,7 +19,7 @@ class ServicePage(val driver: WebDriver) {
             driver.findElement(By.xpath("//div[@class=\"profile-name\"]//a"))
         }
         payment = waiter.until {
-            driver.findElement(By.xpath("//div[@class=\"payment-summary\"]//button"))
+            driver.findElement(By.xpath("(//form//button[text()=\"Continue\"])[1]"))
         }
         like = waiter.until {
             driver.findElement(By.xpath("//div[@class=\"top-nav\"]//button[contains(@class, \"icn-heart\")]"))
@@ -32,9 +32,9 @@ class ServicePage(val driver: WebDriver) {
         }
     }
 
-    fun startPayment(): PaymentPage {
+    fun startPayment(): StartPaymentPage {
         payment.click()
-        return PaymentPage(driver)
+        return StartPaymentPage(driver)
     }
 
     fun isLiked(): Boolean = like.getAttribute("class").contains("collected")
